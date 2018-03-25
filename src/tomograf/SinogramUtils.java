@@ -6,40 +6,80 @@ import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
 
 public class SinogramUtils {
+    @SuppressWarnings("duplicated")
+    public static double bresenhamLine(Mat picture, int x1, int y1, int x2, int y2) {
+        double result = 0;
+        int d, dx, dy, ai, bi, xi, yi;
+        int x = x1, y = y1;
+
+        if(x1 < x2) {
+            xi = 1;
+            dx = x2 - x1;
+        } else {
+            xi = -1;
+            dx = x1 - x2;
+        }
+
+        if(y1 < y2) {
+            yi = 1;
+            dy = y2 - y1;
+        } else {
+            yi = -1;
+            dy = y1 - y2;
+        }
+        result += picture.get(x, y)[0];
+
+        if (dx > dy) {
+            ai = (dy - dx) * 2;
+            bi = dy * 2;
+            d = bi - dx;
+            // pętla po kolejnych x
+            while (x != x2) {
+                // test współczynnika
+                if (d >= 0) {
+                    x += xi;
+                    y += yi;
+                    d += ai; }
+                else {
+                    d += bi;
+                    x += xi;
+                }
+                result += picture.get(x, y)[0];
+            }
+        } else {
+            ai = ( dx - dy ) * 2;
+            bi = dx * 2;
+            d = bi - dy;
+            while (y != y2) {
+                if (d >= 0) {
+                    x += xi;
+                    y += yi;
+                    d += ai;
+                } else {
+                    d += bi;
+                    y += yi;
+                }
+                result += picture.get(x, y)[0];
+            }
+        }
+
+        return result;
+    }
 
     public static double calculatePixel(Mat picture, double i, int j, int w, double beta, int count) {
         double radius = w/2.0 - 1.0;
-        double x1 = w/2.0 + radius * Math.cos(Math.toRadians(i));
-        double y1 = w/2.0 + radius * Math.sin(Math.toRadians(i));
+        int x1 = (int)Math.round(w/2.0 + radius * Math.cos(Math.toRadians(i)));
+        int y1 = (int)Math.round(w/2.0 + radius * Math.sin(Math.toRadians(i)));
 
         double step = beta / (count-1.0);
         double rotation = step * (j - (count/2.0));
 
-        double x2 = w/2.0 - radius * Math.cos(Math.toRadians(i - rotation));
-        double y2 = w/2.0 - radius * Math.sin(Math.toRadians(i - rotation));
+        int x2 = (int)Math.round(w/2.0 - radius * Math.cos(Math.toRadians(i - rotation)));
+        int y2 = (int)Math.round(w/2.0 - radius * Math.sin(Math.toRadians(i - rotation)));
 
-        double vecX = x2 - x1;
-        double vecY = y2 - y1;
+        double result = bresenhamLine(picture, x1, y1, x2, y2);
 
-        double size = Math.sqrt(vecX * vecX + vecY * vecY);
-
-        vecX = 0.2 * vecX / size;
-        vecY = 0.2 * vecY / size;
-
-        double posX = x1;
-        double posY = y1;
-
-        double result = 0;
-
-        for(int it = 1; it <= 5 * size; it++) {
-            posX += vecX;
-            posY += vecY;
-            if(Math.round(posX) >= 0 && Math.round(posX) < w && Math.round(posY) >= 0 && Math.round(posY) < w) {
-                result += picture.get((int) Math.round(posX), (int) Math.round(posY))[0];
-            }
-        }
-
-        return result/size;
+        return result;
     }
 
     public static Mat createSinogram(String path, double alpha, double beta, int detectors) {

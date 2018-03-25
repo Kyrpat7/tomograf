@@ -29,7 +29,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
 
         MatOfByte bytes = new MatOfByte();
-        Mat sinogram_mat = SinogramUtils.createSinogram("Kwadraty2.jpg", 1, 120, 250);
+        Mat sinogram_mat = SinogramUtils.createSinogram("Shepp_logan.png", 1, 270, 250);
         System.out.println(sinogram_mat.dump());
         Highgui.imencode(".bmp", sinogram_mat, bytes);
         //System.out.println(bytes.dump());
