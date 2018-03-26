@@ -13,6 +13,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.highgui.Highgui;
+import sample.util.ReconstructionUtil;
 import sample.util.SinogramUtils;
 
 import javax.swing.plaf.FileChooserUI;
@@ -35,7 +36,7 @@ public class Controller {
     public Pane sinogramPane;
     public Pane reconstructedPane;
     private String filePath;
-
+    private Mat sinogram_mat;
 
 
     @FXML
@@ -50,44 +51,30 @@ public class Controller {
 
         originalPane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
-
-        reconstructedPane.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT)));
     }
 
     public void execute(ActionEvent actionEvent) {
         createSinogram();
-        //createReconstructedImage();
+        createReconstructedImage();
     }
 
     private void createSinogram(){
         MatOfByte bytes = new MatOfByte();
-        Mat sinogram_mat = SinogramUtils.createSinogram(filePath, (int)stepScrollBar.getValue(), (int)angleScrollBar.getValue(), (int)detectorScrollBar.getValue());
+        sinogram_mat = SinogramUtils.createSinogram(filePath, (int)stepScrollBar.getValue(), (int)angleScrollBar.getValue(), (int)detectorScrollBar.getValue());
         Highgui.imencode(".bmp", sinogram_mat, bytes);
         Image sin = new Image(new ByteArrayInputStream(bytes.toArray()), 400, 400, true, false);
         sinogramPane.setBackground(new Background(new BackgroundImage(sin, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
-        createReconstructedImage();
     }
 
 
     private void createReconstructedImage(){
-        ArrayList<Integer> list;
-        int x1,y1,x2,y2;
-
         MatOfByte bytes = new MatOfByte();
-        int count =0;
-        for(int i = 0; i < 360/(int)stepScrollBar.getValue(); i++) {
-            for(int j = 0; j < (int)detectorScrollBar.getValue(); j++, count++) {
-                list = listOfLines.get(count);
-                x1 = list.get(0);
-                y1 = list.get(1);
-                x2 = list.get(2);
-                y2 = list.get(3);
-               // double line = bresenhamLine(x1,y1,x2,y2)
-
-            }
-        }
+        Mat picture = ReconstructionUtil.reconstructImage(sinogram_mat, (int)stepScrollBar.getValue(), (int)angleScrollBar.getValue(), (int)detectorScrollBar.getValue());
+        Highgui.imencode(".bmp", picture, bytes);
+        Image sin = new Image(new ByteArrayInputStream(bytes.toArray()), 400, 400, true, false);
+        reconstructedPane.setBackground(new Background(new BackgroundImage(sin, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
     }
 
     public void chooseFile(ActionEvent actionEvent) throws IOException{

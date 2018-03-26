@@ -10,7 +10,6 @@ public class SinogramUtils {
 
     public static ArrayList<ArrayList<Integer>> listOfLines = new ArrayList<ArrayList<Integer>>();
 
-    @SuppressWarnings("duplicated")
     public static double bresenhamLine(Mat picture, int x1, int y1, int x2, int y2) {
         double result = 0;
         int d, dx, dy, ai, bi, xi, yi;
