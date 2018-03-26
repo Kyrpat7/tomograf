@@ -52,7 +52,11 @@ public class Controller {
     }
 
     public void execute(ActionEvent actionEvent) {
-        // =======SINOGRAM====
+        createSinogram();
+        //createReconstructedImage();
+    }
+
+    private void createSinogram(){
         MatOfByte bytes = new MatOfByte();
         Mat sinogram_mat = SinogramUtils.createSinogram(filePath, (int)stepScrollBar.getValue(), (int)angleScrollBar.getValue(), (int)detectorScrollBar.getValue());
         Highgui.imencode(".bmp", sinogram_mat, bytes);
