@@ -4,7 +4,12 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
 
+import java.util.ArrayList;
+
 public class SinogramUtils {
+
+    public static ArrayList<ArrayList<Integer>> listOfLines = new ArrayList<ArrayList<Integer>>();
+
     @SuppressWarnings("duplicated")
     public static double bresenhamLine(Mat picture, int x1, int y1, int x2, int y2) {
         double result = 0;
@@ -75,6 +80,13 @@ public class SinogramUtils {
 
         int x2 = (int)Math.round(w/2.0 - radius * Math.cos(Math.toRadians(i - rotation)));
         int y2 = (int)Math.round(w/2.0 - radius * Math.sin(Math.toRadians(i - rotation)));
+
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(x1);
+        list.add(y1);
+        list.add(x2);
+        list.add(y2);
+        listOfLines.add(list);
 
         double result = bresenhamLine(picture, x1, y1, x2, y2);
 

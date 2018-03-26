@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="626.0" prefWidth="1320.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
+<GridPane alignment="center" hgap="10" prefHeight="626.0" prefWidth="1400.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.Controller">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -18,7 +18,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="600.0" prefWidth="1314.0">
+      <AnchorPane prefHeight="600.0" prefWidth="1498.0">
          <children>
             <Pane layoutY="3.0" prefHeight="597.0" prefWidth="186.0">
                <children>
@@ -45,20 +45,20 @@
                   </Label>
                </children>
             </Pane>
-            <Pane fx:id="originalPane" layoutX="203.0" layoutY="123.0" prefHeight="400.0" prefWidth="400.0" />
-            <Pane fx:id="sinogramPane" layoutX="613.0" layoutY="123.0" prefHeight="400.0" prefWidth="276.0" />
-            <Pane fx:id="reconstructedPane" layoutX="902.0" layoutY="123.0" prefHeight="400.0" prefWidth="400.0" />
-            <Label layoutX="315.0" layoutY="40.0" text="Original image">
+            <Pane fx:id="originalPane" layoutX="186.0" layoutY="123.0" prefHeight="400.0" prefWidth="400.0" />
+            <Pane fx:id="sinogramPane" layoutX="586.0" layoutY="123.0" prefHeight="400.0" prefWidth="400.0" />
+            <Pane fx:id="reconstructedPane" layoutX="986.0" layoutY="123.0" prefHeight="400.0" prefWidth="400.0" />
+            <Label layoutX="298.0" layoutY="40.0" text="Original image">
                <font>
                   <Font size="27.0" />
                </font>
             </Label>
-            <Label layoutX="694.0" layoutY="40.0" text="Sinogram">
+            <Label layoutX="729.0" layoutY="48.0" text="Sinogram">
                <font>
                   <Font size="27.0" />
                </font>
             </Label>
-            <Label layoutX="976.0" layoutY="40.0" text="Reconstructed Image">
+            <Label layoutX="1060.0" layoutY="48.0" text="Reconstructed Image">
                <font>
                   <Font size="27.0" />
                </font>

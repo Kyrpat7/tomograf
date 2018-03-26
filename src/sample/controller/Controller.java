@@ -17,6 +17,10 @@ import sample.util.SinogramUtils;
 
 import javax.swing.plaf.FileChooserUI;
 import java.io.*;
+import java.util.ArrayList;
+
+import static sample.util.SinogramUtils.bresenhamLine;
+import static sample.util.SinogramUtils.listOfLines;
 
 public class Controller {
 
@@ -63,6 +67,27 @@ public class Controller {
         Image sin = new Image(new ByteArrayInputStream(bytes.toArray()), 400, 400, true, false);
         sinogramPane.setBackground(new Background(new BackgroundImage(sin, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
+        createReconstructedImage();
+    }
+
+
+    private void createReconstructedImage(){
+        ArrayList<Integer> list;
+        int x1,y1,x2,y2;
+
+        MatOfByte bytes = new MatOfByte();
+        int count =0;
+        for(int i = 0; i < 360/(int)stepScrollBar.getValue(); i++) {
+            for(int j = 0; j < (int)detectorScrollBar.getValue(); j++, count++) {
+                list = listOfLines.get(count);
+                x1 = list.get(0);
+                y1 = list.get(1);
+                x2 = list.get(2);
+                y2 = list.get(3);
+               // double line = bresenhamLine(x1,y1,x2,y2)
+
+            }
+        }
     }
 
     public void chooseFile(ActionEvent actionEvent) throws IOException{
@@ -89,7 +114,7 @@ public class Controller {
         angleScrollBar.setValue(180);
         angleLabel.setText("180");
         detectorScrollBar.setMin(0);
-        detectorScrollBar.setMax(500);
+        detectorScrollBar.setMax(400);
         detectorScrollBar.setValue(250);
         detectorLabel.setText("250");
 
