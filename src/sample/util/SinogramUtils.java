@@ -1,6 +1,5 @@
-package tomograf;
+package sample.util;
 
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
