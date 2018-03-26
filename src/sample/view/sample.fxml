@@ -38,7 +38,7 @@
                      </font>
                   </Label>
                   <Button layoutX="25.0" layoutY="76.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="31.0" prefWidth="137.0" text="Choose a file" />
-                  <Label layoutX="9.0" layoutY="24.0" text="Tomograf xD">
+                  <Label layoutX="9.0" layoutY="24.0" text="Tomograf">
                      <font>
                         <Font name="System Bold" size="28.0" />
                      </font>

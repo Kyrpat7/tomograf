@@ -3,15 +3,51 @@ package sample.util;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
+import org.opencv.imgproc.Imgproc;
 
 import static org.opencv.core.CvType.CV_32FC1;
 
 public class ReconstructionUtil {
 
+    /*public static double getFilter(int x1, int x2, int y1, int y2, int x, int y, double value) {
+        double len = Math.sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+        double curr_len = Math.sqrt( (x-x1)*(x-x1) + (y-y1)*(y-y1));
+        double k = len/2 - curr_len;
+        if( k == 0) return 1 * value;
+        //if(k % 2 == 1) return 0;
+        double arg = Math.PI * curr_len / len;
+        return value * (1 - 1.93*Math.cos(2 * arg) + 1.29 * Math.cos(4*arg) - 0.388*Math.cos(6*arg) + 0.028*Math.cos(8*arg));
+
+    }*/
+
+    public static double getFilter(int x1, int x2, int y1, int y2, int x, int y, double value) {
+        double len = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        double curr_len = Math.sqrt((x - x1) * (x - x1) + (y - y1) * (y - y1));
+        double k = len / 2 - curr_len;
+        double arg = Math.PI * curr_len / len;
+        return value * (0.53836 - 0.46164 * Math.cos(2*arg));
+    }
+
+    /*public static void convolve(Mat sin) {
+        for(int i = 0; i < sin.size().width; i++) {
+            for(int j = 0; j < sin.size().height; j++) {
+                int size = (int)sin.size().height;
+                double result = 0;
+                for(int m = 0; m < sin.size().width; m++) {
+                    double value = sin.get(j, m)[0];
+                    result += value * getFilter( size - m);
+                }
+                sin.put(i, j, result);
+            }
+        }
+    }*/
+
+
     public static Mat reconstructImage(Mat sinogram, int alpha, int beta, int detectors) {
         Mat result = new Mat(400, 400, CV_32FC1);
-        double width = result.size().width;
+        int width = (int)result.size().width;
         for(int i = 0; i < width; i++)
             for(int j = 0; j < width; j++) {
                 result.put(i, j, .0);
@@ -32,6 +68,7 @@ public class ReconstructionUtil {
             }
         }
 
+
         double max = -100;
         for(int i = 0; i < width; i++)
             for(int j = 0; j < width; j++) {
@@ -40,8 +77,8 @@ public class ReconstructionUtil {
                 }
             };
 
-        result.convertTo(result, -1, 255.0/max);
-
+        result.convertTo(result, -1, 200.0/max);
+        Imgproc.GaussianBlur(result, result, new Size(11,11), 0.15);
         return result;
 
     }
@@ -66,7 +103,7 @@ public class ReconstructionUtil {
             yi = -1;
             dy = y1 - y2;
         }
-        picture.put(x, y, picture.get(x, y)[0] + value);
+        picture.put(x, y, picture.get(x, y)[0] + getFilter(x1, x2, y1, y2, x, y, value));
 
         if (dx > dy) {
             ai = (dy - dx) * 2;
@@ -83,7 +120,7 @@ public class ReconstructionUtil {
                     d += bi;
                     x += xi;
                 }
-                picture.put(x, y, picture.get(x, y)[0] + value);
+                picture.put(x, y, picture.get(x, y)[0] + getFilter(x1, x2, y1, y2, x, y, value));
             }
         } else {
             ai = (dx - dy) * 2;
@@ -98,7 +135,7 @@ public class ReconstructionUtil {
                     d += bi;
                     y += yi;
                 }
-                picture.put(x, y, picture.get(x, y)[0] + value);
+                picture.put(x, y, (picture.get(x, y)[0] + getFilter(x1, x2, y1, y2, x, y, value)));
             }
         }
     }

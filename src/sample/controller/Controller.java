@@ -97,13 +97,13 @@ public class Controller {
         stepScrollBar.setValue(1);
         stepLabel.setText("1");
         angleScrollBar.setMin(0);
-        angleScrollBar.setMax(270);
-        angleScrollBar.setValue(180);
-        angleLabel.setText("180");
+        angleScrollBar.setMax(360);
+        angleScrollBar.setValue(270);
+        angleLabel.setText("270");
         detectorScrollBar.setMin(0);
         detectorScrollBar.setMax(400);
-        detectorScrollBar.setValue(250);
-        detectorLabel.setText("250");
+        detectorScrollBar.setValue(400);
+        detectorLabel.setText("400");
 
         stepScrollBar.valueProperty().addListener(
                 (observable, oldvalue, newvalue) ->

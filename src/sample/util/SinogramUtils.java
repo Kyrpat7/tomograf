@@ -12,6 +12,7 @@ public class SinogramUtils {
 
     public static double bresenhamLine(Mat picture, int x1, int y1, int x2, int y2) {
         double result = 0;
+        int len = 0;
         int d, dx, dy, ai, bi, xi, yi;
         int x = x1, y = y1;
 
@@ -31,6 +32,7 @@ public class SinogramUtils {
             dy = y1 - y2;
         }
         result += picture.get(x, y)[0];
+        len++;
 
         if (dx > dy) {
             ai = (dy - dx) * 2;
@@ -48,6 +50,7 @@ public class SinogramUtils {
                     x += xi;
                 }
                 result += picture.get(x, y)[0];
+                len++;
             }
         } else {
             ai = ( dx - dy ) * 2;
@@ -63,10 +66,11 @@ public class SinogramUtils {
                     y += yi;
                 }
                 result += picture.get(x, y)[0];
+                len++;
             }
         }
 
-        return result;
+        return result / len;
     }
 
     public static double calculatePixel(Mat picture, double i, int j, int w, double beta, int count) {
@@ -80,15 +84,7 @@ public class SinogramUtils {
         int x2 = (int)Math.round(w/2.0 - radius * Math.cos(Math.toRadians(i - rotation)));
         int y2 = (int)Math.round(w/2.0 - radius * Math.sin(Math.toRadians(i - rotation)));
 
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(x1);
-        list.add(y1);
-        list.add(x2);
-        list.add(y2);
-        listOfLines.add(list);
-
         double result = bresenhamLine(picture, x1, y1, x2, y2);
-
         return result;
     }
 
